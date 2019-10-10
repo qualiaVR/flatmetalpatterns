@@ -1,0 +1,8 @@
+com.flatmetalpatterns.app
+drawable screen
+mipmap icon
+string activity_name
+string app_name
+string billing_key_param
+string launcher_name
+xml config
