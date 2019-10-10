@@ -1,0 +1,106 @@
+{
+  "prepare_queue": {
+    "installed": [],
+    "uninstalled": []
+  },
+  "config_munge": {
+    "files": {
+      "res/xml/config.xml": {
+        "parents": {
+          "/*": [
+            {
+              "xml": "<feature name=\"Whitelist\"><param name=\"android-package\" value=\"org.apache.cordova.whitelist.WhitelistPlugin\" /><param name=\"onload\" value=\"true\" /></feature>",
+              "count": 1
+            },
+            {
+              "xml": "<feature name=\"SplashScreen\"><param name=\"android-package\" value=\"org.apache.cordova.splashscreen.SplashScreen\" /><param name=\"onload\" value=\"true\" /></feature>",
+              "count": 1
+            },
+            {
+              "xml": "<feature name=\"InAppBillingPlugin\"><param name=\"android-package\" value=\"com.smartmobilesoftware.inappbilling.InAppBillingPlugin\" /></feature>",
+              "count": 1
+            },
+            {
+              "xml": "<feature name=\"InAppBillingV3\"><param name=\"android-package\" value=\"com.alexdisler.inapppurchases.InAppBillingV3\" /></feature>",
+              "count": 1
+            }
+          ]
+        }
+      },
+      "AndroidManifest.xml": {
+        "parents": {
+          "/*": [
+            {
+              "xml": "<uses-permission android:name=\"com.android.vending.BILLING\" />",
+              "count": 1
+            }
+          ],
+          "/manifest": [
+            {
+              "xml": "<uses-permission android:name=\"com.android.vending.BILLING\" />",
+              "count": 1
+            }
+          ]
+        }
+      },
+      "*/billing_key_param.xml": {
+        "parents": {
+          "/*": [
+            {
+              "xml": "<string name=\"billing_key_param\">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAl4/ovSXJmQJwiooFtyl1RgvxTTAIEPgs1cuWqgneCgKRwo/V7oPitjyQX2TUzC11MplZgL79Zucoqed08OXWu5EZlMrUz9v0uIzGYsuQL96oZ1iOmS0hE8JJ3gAKWqgjCvfvGOST9yYF4HMZ1UkmlTOUziDRupfZFICLFga7TR/IbXl759H6qi1wCqmq5QDl3K+l6OHPo1kpLU5ZMjI/+x9ng6h8iuIFVsvqditen+Q2jHKhlE2MM6BIwMOyAuE/k/7ZJ7WcKFCNP5TynWnKWVU9O7PIOle8/4eVud0p0zsQMWNzXdEFRzxcHJSawK5tiUaYoFEvWZROjDbMDEgj6QIDAQAB</string>",
+              "count": 1
+            }
+          ]
+        }
+      }
+    }
+  },
+  "installed_plugins": {
+    "cordova-plugin-whitelist": {
+      "PACKAGE_NAME": "com.flatmetalpatterns.app"
+    },
+    "cordova-plugin-splashscreen": {
+      "PACKAGE_NAME": "com.flatmetalpatterns.app"
+    },
+    "cc.fovea.cordova.purchase": {
+      "BILLING_KEY": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAl4/ovSXJmQJwiooFtyl1RgvxTTAIEPgs1cuWqgneCgKRwo/V7oPitjyQX2TUzC11MplZgL79Zucoqed08OXWu5EZlMrUz9v0uIzGYsuQL96oZ1iOmS0hE8JJ3gAKWqgjCvfvGOST9yYF4HMZ1UkmlTOUziDRupfZFICLFga7TR/IbXl759H6qi1wCqmq5QDl3K+l6OHPo1kpLU5ZMjI/+x9ng6h8iuIFVsvqditen+Q2jHKhlE2MM6BIwMOyAuE/k/7ZJ7WcKFCNP5TynWnKWVU9O7PIOle8/4eVud0p0zsQMWNzXdEFRzxcHJSawK5tiUaYoFEvWZROjDbMDEgj6QIDAQAB",
+      "PACKAGE_NAME": "com.flatmetalpatterns.app"
+    },
+    "cordova-plugin-inapppurchase": {
+      "PACKAGE_NAME": "com.flatmetalpatterns.app"
+    }
+  },
+  "dependent_plugins": {},
+  "modules": [
+    {
+      "id": "cordova-plugin-splashscreen.SplashScreen",
+      "file": "plugins/cordova-plugin-splashscreen/www/splashscreen.js",
+      "pluginId": "cordova-plugin-splashscreen",
+      "clobbers": [
+        "navigator.splashscreen"
+      ]
+    },
+    {
+      "id": "cc.fovea.cordova.purchase.InAppBillingPlugin",
+      "file": "plugins/cc.fovea.cordova.purchase/www/store-android.js",
+      "pluginId": "cc.fovea.cordova.purchase",
+      "clobbers": [
+        "store"
+      ]
+    },
+    {
+      "id": "cordova-plugin-inapppurchase.InAppBillingV3",
+      "file": "plugins/cordova-plugin-inapppurchase/www/index-android.js",
+      "pluginId": "cordova-plugin-inapppurchase",
+      "merges": [
+        "inAppPurchase"
+      ]
+    }
+  ],
+  "plugin_metadata": {
+    "cordova-plugin-whitelist": "1.3.3",
+    "cordova-plugin-splashscreen": "5.0.2",
+    "cc.fovea.cordova.purchase": "7.4.3",
+    "cordova-plugin-inapppurchase": "1.1.0"
+  }
+}
