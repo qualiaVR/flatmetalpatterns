@@ -1,0 +1,4 @@
+#Wed Apr 03 10:35:00 MST 2019
+base.0=C\:\\Users\\r2d2_\\OneDrive\\Documentos\\lemon\\metal\\platforms\\android\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\0
+path.0=classes.dex
+renamed.0=classes.dex
