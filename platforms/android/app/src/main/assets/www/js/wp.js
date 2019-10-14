@@ -35,9 +35,13 @@ $(document).ready(function()
       })
     }
   });
+
+  $('.shop-category-select').change(function() {
+    loadCategoryContent();
+  })
 });
 
-function store() {
+function loadCategoryContent() {
   var id = document.getElementById("category").value;
   $("#storeList").html("");
   $.ajax({

@@ -4,8 +4,8 @@
     package="com.flatmetalpatterns.app"
     android:hardwareAccelerated="true"
     android:targetSandboxVersion="2"
-    android:versionCode="66"
-    android:versionName="1.0.0" >
+    android:versionCode="67"
+    android:versionName="1.1.0" >
 
     <uses-sdk
         android:minSdkVersion="19"

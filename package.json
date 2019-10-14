@@ -12,9 +12,12 @@
     "dependencies": {
         "cc.fovea.cordova.purchase": "^7.4.3",
         "cordova-android": "^7.1.4",
+        "cordova-browser": "^6.0.0",
+        "cordova-ios": "^5.0.1",
         "cordova-plugin-inapppurchase": "^1.2.0",
         "cordova-plugin-splashscreen": "^5.0.2",
-        "cordova-plugin-whitelist": "^1.3.3"
+        "cordova-plugin-whitelist": "^1.3.3",
+        "in-app-purchase": "^1.11.4"
     },
     "cordova": {
         "plugins": {
@@ -26,7 +29,9 @@
             "cordova-plugin-inapppurchase": {}
         },
         "platforms": [
-            "android"
+            "android",
+            "browser",
+            "ios"
         ]
     }
 }

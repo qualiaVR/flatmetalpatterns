@@ -3,7 +3,175 @@ $click_counter = 0;
 $click_counter_2 = 0;
 $first_click = 0;
 
-var productIds = ["sub_completo1", "sub_trimestral", "sub_semestral"];
+productIds = [];
+subscriptionReceipt = window.localStorage.getItem("sub_receipt");
+restoredReceipt = window.localStorage.getItem("rest_receipt");
+
+
+// var productIds = ['one_month.com.fmp.app', 'three_months.com.fmp.app', 'six_months.com.fmp.app'];
+// var productIds = ['sub_completo1', 'sub_trimestral', 'sub_semestral', 'test'];
+// var productIds = [];
+
+// document.addEventListener("deviceready", onDeviceReady, false);
+
+function onDeviceReady() {
+    subscriptionReceipt = window.localStorage.getItem("sub_receipt");
+    console.log(subscriptionReceipt)
+}
+
+if(localStorage != undefined) {
+    console.log("Local Storage is supported");
+} else {
+    console.log("No support");
+}
+
+function loadProducts() {
+    if (subscriptionReceipt !== null && restoredReceipt !== null) {
+        today = new Date().getTime();
+        endDate = today + 2592000000;
+        activeSubscription(today, endDate)
+    }
+
+    let iapIds = []
+
+    if (window.cordova.platformId == 'ios') {
+        iapIds = ['monthly_sub.com.fmp.app', 'trimestral_sub.com.fmp.app', 'semestral_sub.com.fmp.app', 'test'];
+    } else if (window.cordova.platformId == 'android') {
+        iapIds = ['sub_completo1', 'sub_trimestral', 'sub_semestral', 'test'];
+    } else {
+        iapIds = ['sub_completo1', 'sub_trimestral', 'sub_semestral', 'test'];
+    }
+
+    productIds = iapIds;
+
+    console.log(window.cordova.platformId)
+  
+    inAppPurchase
+    .getProducts(iapIds)
+    .then(function (products) {
+        products = products;
+        console.log('success' + products);
+    })
+    .catch(function (err) {
+      console.log('error' + err);
+    });
+};
+
+function subscribe(productId) {
+    console.log('comprar')
+
+    inAppPurchase
+    .subscribe(productId)
+  
+    .then(function (data) {
+        if (productId === productIds[0] ) {
+            today = new Date().getTime();
+            endDate = today + 2592000000;
+            activeSubscription(today, endDate)
+            console.log(data.receipt)
+
+            window.localStorage.setItem("sub_receipt", data.receipt);
+            console.log(window.localStorage.getItem("sub_receipt"));
+            
+            return inAppPurchase.consume(data.productType, data.receipt, data.signature);
+
+        } else if (productId === productIds[1]) {
+            today = new Date().getTime();
+            endDate = today + 7776000000;
+            activeSubscription(today, endDate)
+            console.log(data.receipt)
+
+            window.localStorage.setItem("sub_receipt", data.receipt);
+            console.log(window.localStorage.getItem("sub_receipt"));
+
+            return inAppPurchase.consume(data.productType, data.receipt, data.signature);
+
+        } else if (productId === productIds[2]) {
+            today = new Date().getTime();
+            endDate = today + 15552000000;
+            activeSubscription(today, endDate)
+            console.log(data.receipt)
+            
+            window.localStorage.setItem("sub_receipt", data.receipt);
+            console.log(window.localStorage.getItem("sub_receipt"));
+
+            return inAppPurchase.consume(data.productType, data.receipt, data.signature);
+        }
+
+        return inAppPurchase.consume(data.type, data.receipt, data.signature);
+    }) 
+  
+    .then(function () {
+        console.log('consume done!');
+    })
+  
+    .catch(function (err) {
+    console.log('error' + err);
+    });
+}
+
+function logSubs() {
+    console.log(subscriptionReceipt)
+}
+
+function purchaseTest(productId) {
+    inAppPurchase
+      .buy(productId)
+      .then(function (data) {
+        today = new Date().getTime();
+        endDate = today + 30;
+        activeSubscription(today, endDate)
+        return inAppPurchase.consume(data.productType, data.receipt, data.signature);
+      })
+      .then(function () {
+        console.log('product was successfully consumed!');
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
+} 
+
+function storeReceipt(receipt) {
+    window.localStorage.setItem("sub_receipt", receipt);
+}
+
+function activeSubscription(date, endDate) {
+    sDate = new Date(date);
+    eDate = new Date(endDate);
+    textSDate = "" + sDate.getDate() + "/" + months[sDate.getMonth()] + "/" + sDate.getFullYear();
+    textEDate = "" + eDate.getDate() + "/" + months[eDate.getMonth()] + "/" + eDate.getFullYear();
+    $("#menu_contents").append(activeSubscriptionMenu);
+    $("#menu").html(allPatterns);
+    $("#subscription-container").html(subscriptionScreen);
+    $("#subData").html("Tu suscripción inició en: " + textSDate+ ", y se renovará automaticamente en: " + textEDate + "<p>Para mas información o para cancelar tu suscripción dirigete a la Play Store");
+    $(".premiumOption").remove();
+    $(".freeApp").remove();
+}
+
+function restorePurchases() {
+    inAppPurchase
+    .restorePurchases()
+
+    
+    .then(function (purchases) {
+        today = new Date().getTime();
+        endDate = today + 15552000000;
+
+        console.log(purchases);
+        
+        window.localStorage.setItem("rest_receipt", data.receipt);
+        console.log(window.localStorage.getItem("rest_receipt"));
+
+        activeSubscription(today, endDate)
+    })
+    
+    .catch(function (err) {
+        console.log(err);
+    });
+     
+};
+
+// var productIds = ["sub_completo1", "sub_trimestral", "sub_semestral"];
 const months = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
 var _IAP = [];
 var _subscriptions = [];
@@ -13,7 +181,7 @@ function getProducts() {
   return _IAP;
 }
 function getReceipt() {
-  return _receipt;
+    return _receipt;
 }
 function getSubscriptions() {
   return _subscriptions;
@@ -21,6 +189,9 @@ function getSubscriptions() {
 
 function onLoad() {
   document.addEventListener("deviceready", onDeviceReady, false);
+
+  subscriptionReceipt = window.localStorage.getItem("sub_receipt");
+  console.log(subscriptionReceipt)
 }
 
 document.addEventListener("resume", onResume, false);
@@ -34,94 +205,94 @@ function onDeviceReady() {
 }
 
 function initializeStore() {
+    loadProducts();
   // getAllProducts();
 
-  restorePurchase();
-
+//   restorePurchase();
 }
 
-function getAllProducts() {
-  inAppPurchase.getProducts(productIds).then(function(products){
-    _IAP = products;
-  }).catch(function(error){
-    console.log(error);
-  });
-}
+// function getAllProducts() {
+//   inAppPurchase.getProducts(productIds).then(function(products){
+//     _IAP = products;
+//   }).catch(function(error){
+//     console.log(error);
+//   });
+// }
 
-function restorePurchase() {
-    inAppPurchase.restorePurchases().then(function(data) {
-      today = new Date();
-      startDate = data[data.length - 1].date;
-      switch(data[data.length - 1].productId) {
-        case 'sub_completo1':
-          endDate = startDate + 2592000000;
-          if (today.getTime() < endDate) {
-            activeSubscription(startDate, endDate)
-          }
-          break;
-        case 'sub_trimestral':
-          endDate = startDate + 7776000000;
-          if (today.getTime() < endDate) {
-            activeSubscription(startDate, endDate)
-          }
-          break;
-        case 'sub_semestral':
-          endDate = startDate + 15552000000;
-          if (today.getTime() < endDate) {
-            activeSubscription(startDate, endDate)
-          }
-          break;
-      }
-    }).catch(function(error){
+// function restorePurchase() {
+//     inAppPurchase.restorePurchases().then(function(data) {
+//       today = new Date();
+//       startDate = data[data.length - 1].date;
+//       switch(data[data.length - 1].productId) {
+//         case 'sub_completo1':
+//           endDate = startDate + 2592000000;
+//           if (today.getTime() < endDate) {
+//             activeSubscription(startDate, endDate)
+//           }
+//           break;
+//         case 'sub_trimestral':
+//           endDate = startDate + 7776000000;
+//           if (today.getTime() < endDate) {
+//             activeSubscription(startDate, endDate)
+//           }
+//           break;
+//         case 'sub_semestral':
+//           endDate = startDate + 15552000000;
+//           if (today.getTime() < endDate) {
+//             activeSubscription(startDate, endDate)
+//           }
+//           break;
+//       }
+//     }).catch(function(error){
 
-    });
-}
+//     });
+// }
 
-function activeSubscription(date, endDate) {
-  sDate = new Date(date);
-  eDate = new Date(endDate);
-  textSDate = "" + sDate.getDate() + "/" + months[sDate.getMonth()] + "/" + sDate.getFullYear();
-  textEDate = "" + eDate.getDate() + "/" + months[eDate.getMonth()] + "/" + eDate.getFullYear();
-  $("#menu_contents").append(activeSubscriptionMenu);
-  $("#menu").html(allPatterns);
-  $("#subscription-container").html(subscriptionScreen);
-  $("#subData").html("Tu suscripción inició en: " + textSDate+ ", y se renovará automaticamente en: " + textEDate + "<p>Para mas información o para cancelar tu suscripción dirigete a la Play Store");
-  $(".premiumOption").remove();
-  $(".freeApp").remove();
-}
+// function activeSubscription(date, endDate) {
+//   sDate = new Date(date);
+//   eDate = new Date(endDate);
+//   textSDate = "" + sDate.getDate() + "/" + months[sDate.getMonth()] + "/" + sDate.getFullYear();
+//   textEDate = "" + eDate.getDate() + "/" + months[eDate.getMonth()] + "/" + eDate.getFullYear();
+//   $("#menu_contents").append(activeSubscriptionMenu);
+//   $("#menu").html(allPatterns);
+//   $("#subscription-container").html(subscriptionScreen);
+//   $("#subData").html("Tu suscripción inició en: " + textSDate+ ", y se renovará automaticamente en: " + textEDate + "<p>Para mas información o para cancelar tu suscripción dirigete a la Play Store");
+//   $(".premiumOption").remove();
+//   $(".freeApp").remove();
+// }
 
-function subscribeMonth() {
-  inAppPurchase.subscribe("sub_completo1").then(function (data) {
-    today = new Date().getTime();
-    endDate = today + 2592000000;
-    activeSubscription(today, endDate)
-    return inAppPurchase.consume(data.productType, data.receipt, data.signature);
-  }).catch(function (error) {
-    console.log(error);
-  });
-}
+// function subscribeMonth() {
+//   inAppPurchase.subscribe("sub_completo1").then(function (data) {
+//     today = new Date().getTime();
+//     endDate = today + 2592000000;
+//     activeSubscription(today, endDate)
+//     return inAppPurchase.consume(data.productType, data.receipt, data.signature);
+//   }).catch(function (error) {
+//     console.log(error);
+//   });
+// }
 
-function subscribeTri() {
-  inAppPurchase.subscribe("sub_trimestral").then(function (data) {
-    today = new Date().getTime();
-    endDate = today + 7776000000;
-    activeSubscription(today, endDate);
-    return inAppPurchase.consume(data.productType, data.receipt, data.signature);
-  }).catch(function (error) {
-    console.log(error);
-  });
-}
+// function subscribeTri() {
+//   inAppPurchase.subscribe("sub_trimestral").then(function (data) {
+//     today = new Date().getTime();
+//     endDate = today + 7776000000;
+//     activeSubscription(today, endDate);
+//     return inAppPurchase.consume(data.productType, data.receipt, data.signature);
+//   }).catch(function (error) {
+//     console.log(error);
+//   });
+// }
 
-function subscribeSem() {
-  inAppPurchase.subscribe("sub_semestral").then(function (data) {
-    today = new Date().getTime();
-    endDate = today + 15552000000;
-    activeSubscription(today, endDate);
-    return inAppPurchase.consume(data.productType, data.receipt, data.signature);
-  }).catch(function (error) {
-    console.log(error);
-  });
-}
+// function subscribeSem() {
+//   inAppPurchase.subscribe("sub_semestral").then(function (data) {
+//     today = new Date().getTime();
+//     endDate = today + 15552000000;
+//     activeSubscription(today, endDate);
+//     return inAppPurchase.consume(data.productType, data.receipt, data.signature);
+//   }).catch(function (error) {
+//     console.log(error);
+//   });
+// }
 
 /*
 *

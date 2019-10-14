@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.flatmetalpatterns.app" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget android-versionCode="111019" id="com.flatmetalpatterns.app" version="1.1.2" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <feature name="Whitelist">
         <param name="android-package" value="org.apache.cordova.whitelist.WhitelistPlugin" />
         <param name="onload" value="true" />
@@ -34,14 +34,14 @@
     <icon density="mdpi" src="res/icon/android/48x48.png" />
     <icon density="hdpi" src="res/icon/android/72x72.png" />
     <icon density="xhdpi" src="res/icon/android/96x96.png" />
-    <splash density="land-hdpi" src="res/screen/android/1024x783.png" />
-    <splash density="land-ldpi" src="res/screen/android/1024x783.png" />
-    <splash density="land-mdpi" src="res/screen/android/1024x783.png" />
-    <splash density="land-xhdpi" src="res/screen/android/1024x783.png" />
-    <splash density="port-hdpi" src="res/screen/android/720x1280.png" />
-    <splash density="port-ldpi" src="res/screen/android/200x320.png" />
-    <splash density="port-mdpi" src="res/screen/android/480x800.png" />
-    <splash density="port-xhdpi" src="res/screen/android/720x1280.png" />
+    <splash density="hdpi" src="res/screen/android/1024x783.png" />
+    <splash density="ldpi" src="res/screen/android/1024x783.png" />
+    <splash density="mdpi" src="res/screen/android/1024x783.png" />
+    <splash density="xhdpi" src="res/screen/android/1024x783.png" />
+    <splash density="hdpi" src="res/screen/android/720x1280.png" />
+    <splash density="ldpi" src="res/screen/android/200x320.png" />
+    <splash density="mdpi" src="res/screen/android/480x800.png" />
+    <splash density="xhdpi" src="res/screen/android/720x1280.png" />
     <preference name="loglevel" value="DEBUG" />
     <preference name="SplashScreen" value="screen" />
     <preference name="SplashScreenDelay" value="5000" />

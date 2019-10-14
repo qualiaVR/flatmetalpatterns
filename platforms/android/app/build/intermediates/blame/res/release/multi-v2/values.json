@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "C:\\Users\\r2d2_\\OneDrive\\Documentos\\lemon\\metal\\platforms\\android\\app\\build\\intermediates\\incremental\\mergeReleaseResources\\merged.dir\\values\\values.xml",
+            "outputFile": "/Users/sebastian/Documents/Github/flatmetalpatterns/platforms/android/app/build/intermediates/incremental/mergeReleaseResources/merged.dir/values/values.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\r2d2_\\OneDrive\\Documentos\\lemon\\metal\\platforms\\android\\app\\src\\main\\res\\values\\billing_key_param.xml",
+                    "source": "/Users/sebastian/Documents/Github/flatmetalpatterns/platforms/android/app/src/main/res/values/billing_key_param.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -21,7 +21,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\r2d2_\\OneDrive\\Documentos\\lemon\\metal\\platforms\\android\\app\\src\\main\\res\\values\\strings.xml",
+                    "source": "/Users/sebastian/Documents/Github/flatmetalpatterns/platforms/android/app/src/main/res/values/strings.xml",
                     "from": {
                         "startLines": "4,2,3",
                         "startColumns": "4,4,4",

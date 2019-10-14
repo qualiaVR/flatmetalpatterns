@@ -169,7 +169,7 @@ android {
         applicationId privateHelpers.extractStringFromManifest("package")
         minSdkVersion 19
         targetSdkVersion 27
-        versionCode 67
+        versionCode 68
         if (cdvMinSdkVersion != null) {
             minSdkVersion cdvMinSdkVersion
         }
@@ -226,7 +226,7 @@ android {
     } else if (Boolean.valueOf(cdvVersionCodeForceAbiDigit)) {
         // This provides compatibility to the default logic for versionCode before cordova-android 5.2.0
         defaultConfig {
-            versionCode defaultConfig.versionCode*10
+            versionCode defaultConfig.versionCode*10 + 1
         }
     }
 

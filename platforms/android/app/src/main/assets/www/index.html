@@ -77,7 +77,7 @@
 <div data-role="header" data-position="fixed" data-theme="b" class="nav">
     <a href="#main_menu" data-theme="d" data-iconpos="notext" data-shadow="false" data-iconshadow="false"
        class="ui-icon-nodisc"><span id="lines"></span></a>
-    <a href="#page-home"><img src="img/logos/Negativo.png" id="mainlogo"/></a>
+    <a href="#page-home" style="overflow: visible"><img src="img/logos/Negativo.png" id="mainlogo"/></a>
     <a href="#tienda" id="cartlogo"><img src="img/logos/baseline-shopping_cart-24px.svg" /></a>
 
 
@@ -188,7 +188,7 @@
         <FORM NAME="sci-calc" id="calculator">
             <TABLE CELLSPACING="0" CELLPADDING="1">
                 <TR>
-                    <TD  COLSPAN="5" ALIGN="center"><INPUT id="calc-input" NAME="display" VALUE="0" SIZE="28" MAXLENGTH="25"></TD>
+                    <TD  COLSPAN="5" style="max-width: 310px !important" ALIGN="center"><INPUT id="calc-input" NAME="display" VALUE="0" SIZE="28" MAXLENGTH="25"></TD>
                 </TR>
                 <TR>
                     <TD ALIGN="center"><INPUT TYPE="button" VALUE="  π " ONCLICK="addChar(this.form.display, 'π')"></TD>
@@ -4002,7 +4002,7 @@
         <div class="container spacing">
           <h3 class="text-center red">Tienda</h3>
           <label for="category">Categorías</label>
-          <select id="category" onchange="store()"></select>
+          <select id="category" class="shop-category-select"></select>
           <ul id="storeList"></ul>
         </div>
     </div>
@@ -4013,10 +4013,18 @@
         <div class="container spacing" id="subscription-container">
             <h3 class="text-center red" style="font-size:38px">¡Suscríbete!</h3>
             <h3 class="text-center red">Obten 3 meses gratis.</h3>
-            <div><input type="submit" class="subscribe-button" id="buy-mensual" value="1 Mes $7.99USD" productId="sub_completo1" onclick="subscribeMonth()"/></div>
-            <div><input type="submit" class="subscribe-button" id="buy-trimestral" value="3 Meses $19.99USD" productId="sub_trimestral" onclick="subscribeTri()"/></div>
-            <div><input type="submit" class="subscribe-button" id="buy-semestral" value="6 Meses 38.99USD" productId="sub_semestral" onclick="subscribeSem()"/></div>
+            <div><input type="submit" class="subscribe-button" id="buy-mensual" value="1 Mes $7.99USD" productId="sub_completo1"  onclick="subscribe(productIds[0])"/></div>
+            <!-- <div><input type="submit" class="subscribe-button" id="buy-mensual" value="1 Mes $7.99USD" productId="sub_completo1"  onclick="subscribe('sub_completo1')"/></div> -->
+            <div><input type="submit" class="subscribe-button" id="buy-trimestral" value="3 Meses $19.99USD" productId="sub_trimestral" onclick="subscribe(productIds[1])"/></div>
+            <!-- <div><input type="submit" class="subscribe-button" id="buy-trimestral" value="3 Meses $19.99USD" productId="sub_trimestral" onclick="subscribe('sub_trimestral')"/></div> -->
+            <div><input type="submit" class="subscribe-button" id="buy-semestral" value="6 Meses 38.99USD" productId="sub_semestral" onclick="subscribe(productIds[2])"/></div>
+            <!-- <div><input type="submit" class="subscribe-button" id="buy-semestral" value="6 Meses 38.99USD" productId="sub_semestral" onclick="subscribe('sub_semestral')"/></div> -->
             <div id="active-subscription"></div>
+
+            <div>
+                <h5 class="text-center red">Si te suscribiste desde otro dispositivo puedes restaurar tus compras.</h5>
+                <div><input type="submit" class="subscribe-button" id="buy-mensual" value="Restaurar compras"  onclick="restorePurchases()"/></div>
+            </div>
         </div>
     </div>
 </div>
