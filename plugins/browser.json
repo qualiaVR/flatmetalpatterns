@@ -18,6 +18,9 @@
     },
     "cordova-plugin-whitelist": {
       "PACKAGE_NAME": "com.flatmetalpatterns.app"
+    },
+    "cordova-plugin-websql": {
+      "PACKAGE_NAME": "com.flatmetalpatterns.app"
     }
   },
   "dependent_plugins": {}

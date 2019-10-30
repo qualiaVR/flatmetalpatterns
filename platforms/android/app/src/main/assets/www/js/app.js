@@ -2,36 +2,35 @@ $detect_page = false;
 $click_counter = 0;
 $click_counter_2 = 0;
 $first_click = 0;
+productIds = [];   
 
-productIds = [];
-subscriptionReceipt = window.localStorage.getItem("sub_receipt");
-restoredReceipt = window.localStorage.getItem("rest_receipt");
+var db = openDatabase('FMP', '1.0', 'subsHistory', 2 * 1024 * 1024);
 
+var subscriptionInfo = {
+    id: '',
+    receipt: '',
+    startDate: '',
+    expirationDate: '',
+};
 
-// var productIds = ['one_month.com.fmp.app', 'three_months.com.fmp.app', 'six_months.com.fmp.app'];
-// var productIds = ['sub_completo1', 'sub_trimestral', 'sub_semestral', 'test'];
-// var productIds = [];
-
-// document.addEventListener("deviceready", onDeviceReady, false);
-
-function onDeviceReady() {
-    subscriptionReceipt = window.localStorage.getItem("sub_receipt");
-    console.log(subscriptionReceipt)
+function onLoad() {
+    document.addEventListener("deviceready", initializeApp, false);
 }
 
-if(localStorage != undefined) {
-    console.log("Local Storage is supported");
-} else {
-    console.log("No support");
-}
+function initializeApp() {
+    // Initializes subscriptions table in database
+    db.transaction(function (tx) { 
+        tx.executeSql('CREATE TABLE IF NOT EXISTS SUBSCRIPTIONS (id INTEGER PRIMARY KEY AUTOINCREMENT, receipt, startDate, expirationDate)'); 
+    }, null, function () { 
+        console.log('Database created');
+    });
 
-function loadProducts() {
-    if (subscriptionReceipt !== null && restoredReceipt !== null) {
-        today = new Date().getTime();
-        endDate = today + 2592000000;
-        activeSubscription(today, endDate)
-    }
+    initializeStore();
+    console.log('Verifying if subscription exists in db');
+    isAlreadySubscribed();
+};
 
+function initializeStore() {
     let iapIds = []
 
     if (window.cordova.platformId == 'ios') {
@@ -44,45 +43,110 @@ function loadProducts() {
 
     productIds = iapIds;
 
-    console.log(window.cordova.platformId)
-  
     inAppPurchase
     .getProducts(iapIds)
     .then(function (products) {
         products = products;
-        console.log('success' + products);
     })
     .catch(function (err) {
       console.log('error' + err);
     });
+}
+
+function isAlreadySubscribed() {
+    db.transaction(function (tx) { 
+        tx.executeSql('SELECT * FROM SUBSCRIPTIONS', [], function (tx, results) { 
+            console.log('Query Results', results);
+            let queryResult = results.rows;
+
+            if (!queryResult || !queryResult.length) {
+                restorePurchases();
+                return;
+            }
+
+            let subscription = queryResult.item(queryResult.length - 1);
+
+            if (isValidSubscription(subscription.expirationDate)) {
+                activeSubscription(subscription.startDate, subscription.expirationDate);x
+            } else {
+                removeSubscription();
+            }
+        }, null);  
+     }); 
+}
+
+function restorePurchases() {
+    inAppPurchase
+    .restorePurchases()
+    .then(function (purchases) {
+        if(purchases && purchases.length > 0) { 
+            purchases.sort((a,b) => new Date(a.date).getTime() > new Date(b.date).getTime());
+            subscription = purchases[purchases.length - 1];
+            if(subscription.state == 0 && subscription.productId) {
+                var expirationDate = calculateExpirationDate(subscription.date, subscription.productId);
+                
+                if (isValidSubscription(expirationDate)) {
+                    storeSubscription(subscription.transactionId, subscription.date, expirationDate);
+                    activeSubscription(subscription.date, expirationDate);
+                }
+            }
+        }
+
+        // No Available subscriptions
+    });
 };
 
-function subscribe(productId) {
-    console.log('comprar')
+function isValidSubscription(expirationDateTimestamp) {
+    return new Date().getTime() <= expirationDateTimestamp;
+}
 
+function storeSubscription(receipt, start, end) {
+    // Store the active subscription in subscriptions table
+    db.transaction(function (tx) { 
+        tx.executeSql(`INSERT INTO SUBSCRIPTIONS (receipt, startDate, expirationDate) VALUES (${receipt}, ${start}, ${end})`), [],
+            function(){
+                // Success insert
+                console.log('SUCCESS INSERT');
+            }, 
+            function(){
+                // Error in insert
+                console.log('ERROR INSERT');
+            }; 
+    }, function (err) {
+        console.log('Insert Transaction Error', err);
+    }, function() {
+        console.log('Insert Transaction Success');
+    });  
+}
+
+function removeSubscription() {
+    db.transaction(function (tx) {
+        tx.executeSql('DROP TABLE SUBSCRIPTIONS', [], function() {
+            // TODO: Notify user the subscription has ended
+        }, function () {
+            console.log('Something went wrong truncating db');
+        });
+    });
+}
+
+function subscribe(productId) {
     inAppPurchase
     .subscribe(productId)
-  
     .then(function (data) {
         if (productId === productIds[0] ) {
             today = new Date().getTime();
             endDate = today + 2592000000;
-            activeSubscription(today, endDate)
-            console.log(data.receipt)
+            activeSubscription(today, endDate);
+            this.storeSubscription(data.transactionId, today, endDate);
 
-            window.localStorage.setItem("sub_receipt", data.receipt);
-            console.log(window.localStorage.getItem("sub_receipt"));
-            
             return inAppPurchase.consume(data.productType, data.receipt, data.signature);
 
         } else if (productId === productIds[1]) {
             today = new Date().getTime();
             endDate = today + 7776000000;
             activeSubscription(today, endDate)
-            console.log(data.receipt)
 
-            window.localStorage.setItem("sub_receipt", data.receipt);
-            console.log(window.localStorage.getItem("sub_receipt"));
+            this.storeSubscription(data.transactionId, today, endDate);
 
             return inAppPurchase.consume(data.productType, data.receipt, data.signature);
 
@@ -90,24 +154,33 @@ function subscribe(productId) {
             today = new Date().getTime();
             endDate = today + 15552000000;
             activeSubscription(today, endDate)
-            console.log(data.receipt)
             
-            window.localStorage.setItem("sub_receipt", data.receipt);
-            console.log(window.localStorage.getItem("sub_receipt"));
+            this.storeSubscription(data.transactionId, today, endDate);
 
             return inAppPurchase.consume(data.productType, data.receipt, data.signature);
         }
-
-        return inAppPurchase.consume(data.type, data.receipt, data.signature);
     }) 
   
-    .then(function () {
-        console.log('consume done!');
+    .then(function (consumable) {
+        console.log('consume done!', consumable);
     })
   
     .catch(function (err) {
     console.log('error' + err);
     });
+}
+
+function testDatabase() {
+    db.transaction(function (tx) { 
+        tx.executeSql('SELECT * FROM SUBSCRIPTIONS', [], function (tx, results) { 
+            var len = results.rows.length, i; 
+            console.log(len);
+    
+            for (i = 0; i < len; i++) { 
+               console.log(results.rows.item(i)); 
+            }
+        }, null);  
+     }); 
 }
 
 function logSubs() {
@@ -148,28 +221,22 @@ function activeSubscription(date, endDate) {
     $(".freeApp").remove();
 }
 
-function restorePurchases() {
-    inAppPurchase
-    .restorePurchases()
 
-    
-    .then(function (purchases) {
-        today = new Date().getTime();
-        endDate = today + 15552000000;
+// Returns int timestamp
+function calculateExpirationDate(startDateTimestamp, productId) {
+    var expirationDate;
+    var startDate = new Date(startDateTimestamp);
+    switch(productId) {
+        case productIds[0] : expirationDate = startDate.getTime() + 2592000000; 
+        break;
+        case productIds[1] : expirationDate = startDate.getTime() + 7776000000;
+        break;
+        case productIds[2] : expirationDate = startDate.getTime() + 15552000000;
+        break;
+    }
 
-        console.log(purchases);
-        
-        window.localStorage.setItem("rest_receipt", data.receipt);
-        console.log(window.localStorage.getItem("rest_receipt"));
-
-        activeSubscription(today, endDate)
-    })
-    
-    .catch(function (err) {
-        console.log(err);
-    });
-     
-};
+    return expirationDate;
+}
 
 // var productIds = ["sub_completo1", "sub_trimestral", "sub_semestral"];
 const months = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
@@ -187,29 +254,12 @@ function getSubscriptions() {
   return _subscriptions;
 }
 
-function onLoad() {
-  document.addEventListener("deviceready", onDeviceReady, false);
-
-  subscriptionReceipt = window.localStorage.getItem("sub_receipt");
-  console.log(subscriptionReceipt)
-}
-
 document.addEventListener("resume", onResume, false);
 
 function onResume() {
   wordpress();
 }
 
-function onDeviceReady() {
-    initializeStore();
-}
-
-function initializeStore() {
-    loadProducts();
-  // getAllProducts();
-
-//   restorePurchase();
-}
 
 // function getAllProducts() {
 //   inAppPurchase.getProducts(productIds).then(function(products){

@@ -7,16 +7,29 @@ productIds = [];
 subscriptionReceipt = window.localStorage.getItem("sub_receipt");
 restoredReceipt = window.localStorage.getItem("rest_receipt");
 
-
-// var productIds = ['one_month.com.fmp.app', 'three_months.com.fmp.app', 'six_months.com.fmp.app'];
-// var productIds = ['sub_completo1', 'sub_trimestral', 'sub_semestral', 'test'];
-// var productIds = [];
-
-// document.addEventListener("deviceready", onDeviceReady, false);
-
 function onDeviceReady() {
     subscriptionReceipt = window.localStorage.getItem("sub_receipt");
     console.log(subscriptionReceipt)
+
+    var dbSize = 5 * 1024 * 1024; // 5MB
+
+    var db = openDatabase("Todo", "", "Todo manager", dbSize, function() {
+        console.log('db successfully opened or created');
+    });
+
+    db.transaction(function (tx) {
+        tx.executeSql("CREATE TABLE IF NOT EXISTS todo(ID INTEGER PRIMARY KEY ASC, todo TEXT, added_on TEXT)",
+            [], onSuccess, onError);
+        tx.executeSql("INSERT INTO todo(todo, added_on) VALUES (?,?)", ['my todo item', new Date().toUTCString()], onSuccess, onError);
+    });
+
+    function onSuccess(transaction, resultSet) {
+        console.log('Query completed: ' + JSON.stringify(resultSet));
+    }
+
+    function onError(transaction, error) {
+        console.log('Query failed: ' + error.message);
+    }
 }
 
 if(localStorage != undefined) {
@@ -69,10 +82,10 @@ function subscribe(productId) {
             endDate = today + 2592000000;
             activeSubscription(today, endDate)
             console.log(data.receipt)
-
+            
             window.localStorage.setItem("sub_receipt", data.receipt);
             console.log(window.localStorage.getItem("sub_receipt"));
-            
+
             return inAppPurchase.consume(data.productType, data.receipt, data.signature);
 
         } else if (productId === productIds[1]) {
@@ -91,14 +104,12 @@ function subscribe(productId) {
             endDate = today + 15552000000;
             activeSubscription(today, endDate)
             console.log(data.receipt)
-            
+
             window.localStorage.setItem("sub_receipt", data.receipt);
             console.log(window.localStorage.getItem("sub_receipt"));
 
             return inAppPurchase.consume(data.productType, data.receipt, data.signature);
         }
-
-        return inAppPurchase.consume(data.type, data.receipt, data.signature);
     }) 
   
     .then(function () {
@@ -151,24 +162,22 @@ function activeSubscription(date, endDate) {
 function restorePurchases() {
     inAppPurchase
     .restorePurchases()
-
     
-    .then(function (purchases) {
-        today = new Date().getTime();
-        endDate = today + 15552000000;
+    today = new Date().getTime();
+    endDate = today + 15552000000;
 
-        console.log(purchases);
-        
-        window.localStorage.setItem("rest_receipt", data.receipt);
-        console.log(window.localStorage.getItem("rest_receipt"));
+    console.log(purchases);
+    
+    window.localStorage.setItem("rest_receipt", data.receipt);
+    console.log(window.localStorage.getItem("rest_receipt"));
 
-        activeSubscription(today, endDate)
-    })
+    activeSubscription(today, endDate)
     
     .catch(function (err) {
         console.log(err);
     });
      
+    onDeviceReady()
 };
 
 // var productIds = ["sub_completo1", "sub_trimestral", "sub_semestral"];

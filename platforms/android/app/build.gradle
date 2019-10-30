@@ -169,7 +169,7 @@ android {
         applicationId privateHelpers.extractStringFromManifest("package")
         minSdkVersion 19
         targetSdkVersion 27
-        versionCode 68
+        versionCode 69
         if (cdvMinSdkVersion != null) {
             minSdkVersion cdvMinSdkVersion
         }
