@@ -82,7 +82,6 @@ function restorePurchases() {
         if(purchases && purchases.length > 0) { 
             purchases.sort((a,b) => new Date(a.date).getTime() > new Date(b.date).getTime());
             subscription = purchases[purchases.length - 1];
-            // if(subscription.state == 0 && subscription.productId) {
             if(subscription.productId) {
                 var expirationDate = calculateExpirationDate(subscription.date, subscription.productId);
                 
