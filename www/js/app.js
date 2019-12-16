@@ -51,6 +51,8 @@ function initializeStore() {
     .catch(function (err) {
       console.log('error' + err);
     });
+
+    subscribe(sub_completo1);
 }
 
 function isAlreadySubscribed() {

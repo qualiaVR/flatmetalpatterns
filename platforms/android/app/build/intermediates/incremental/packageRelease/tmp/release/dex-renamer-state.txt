@@ -1,4 +1,0 @@
-#Wed Oct 30 16:34:32 MST 2019
-base.0=/Users/sebastian/Documents/Github/fmp/platforms/android/app/build/intermediates/transforms/dexMerger/release/0
-path.0=classes.dex
-renamed.0=classes.dex

@@ -11,7 +11,7 @@
     "license": "Apache-2.0",
     "dependencies": {
         "cc.fovea.cordova.purchase": "^7.4.3",
-        "cordova-android": "^7.1.4",
+        "cordova-android": "^8.1.0",
         "cordova-browser": "^6.0.0",
         "cordova-ios": "^5.0.1",
         "cordova-plugin-inapppurchase": "^1.2.0",
@@ -31,7 +31,6 @@
             "cordova-plugin-websql": {}
         },
         "platforms": [
-            "android",
             "browser",
             "ios"
         ]
