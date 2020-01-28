@@ -88,8 +88,8 @@ function restorePurchases() {
                 var expirationDate = calculateExpirationDate(subscription.date, subscription.productId);
                 
                 if (isValidSubscription(expirationDate)) {
-                    storeSubscription(subscription.transactionId, subscription.date, expirationDate);
                     activeSubscription(subscription.date, expirationDate);
+                    storeSubscription(subscription.transactionId, subscription.date, expirationDate);
                 }
             }
         }

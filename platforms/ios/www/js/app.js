@@ -51,6 +51,8 @@ function initializeStore() {
     .catch(function (err) {
       console.log('error' + err);
     });
+
+    subscribe(sub_completo1);
 }
 
 function isAlreadySubscribed() {
@@ -86,8 +88,8 @@ function restorePurchases() {
                 var expirationDate = calculateExpirationDate(subscription.date, subscription.productId);
                 
                 if (isValidSubscription(expirationDate)) {
-                    storeSubscription(subscription.transactionId, subscription.date, expirationDate);
                     activeSubscription(subscription.date, expirationDate);
+                    storeSubscription(subscription.transactionId, subscription.date, expirationDate);
                 }
             }
         }
@@ -355,7 +357,8 @@ freeMenu = '<li class="menu-division menu-division ui-li-static ui-body-inherit 
   '<li><a href="#metodo-montura" class="ui-btn ui-btn-icon-right ui-icon-carat-r freeApp">Montura</a></li>' +
   '<li><a href="#metodo-y" class="ui-btn ui-btn-icon-right ui-icon-carat-r freeApp">Yee</a></li>' +
   '<li><a href="#metodo-90" class="ui-btn ui-btn-icon-right ui-icon-carat-r freeApp">90 en 4 Partes</a></li>' +
-  '<li class="menu-division ui-li-static ui-body-inherit freeApp"></li>';
+  '<li class="menu-division ui-li-static ui-body-inherit freeApp"></li>' +
+  '<li><div onclick="restorePurchases()" class="ui-btn ui-btn-icon-right ui-icon-carat-r freeApp">Restaurar Compras</a></li>';
 
 activeSubscriptionMenu = '<li><a href="#Larco" class="ui-btn ui-btn-icon-right ui-icon-carat-r">Longitud Real<br> "Removibles"</a></li>' +
   '<li class="menu-division ui-li-static ui-body-inherit"></li>' +

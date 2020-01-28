@@ -4012,7 +4012,7 @@
     <div data-role="content">
         <div class="container spacing" id="subscription-container">
             <h3 class="text-center red" style="font-size:38px">¡Suscríbete!</h3>
-            <h3 class="text-center red">Obten 3 meses gratis.</h3>
+            <!-- <h3 class="text-center red">Obten 3 meses gratis.</h3> -->
             <div><input type="submit" class="subscribe-button" id="buy-mensual" value="1 Mes $7.99USD" productId="sub_completo1"  onclick="subscribe(productIds[0])"/></div>
             <!-- <div><input type="submit" class="subscribe-button" id="buy-mensual" value="1 Mes $7.99USD" productId="sub_completo1"  onclick="subscribe('sub_completo1')"/></div> -->
             <div><input type="submit" class="subscribe-button" id="buy-trimestral" value="3 Meses $19.99USD" productId="sub_trimestral" onclick="subscribe(productIds[1])"/></div>
@@ -4020,6 +4020,9 @@
             <div><input type="submit" class="subscribe-button" id="buy-semestral" value="6 Meses 38.99USD" productId="sub_semestral" onclick="subscribe(productIds[2])"/></div>
             <!-- <div><input type="submit" class="subscribe-button" id="buy-semestral" value="6 Meses 38.99USD" productId="sub_semestral" onclick="subscribe('sub_semestral')"/></div> -->
             <div id="active-subscription"></div>
+             <div>
+                <h5 class="text-center red">Si te suscribiste desde otro dispositivo puedes restaurar tus compras.</h5>
+                <div><input type="submit" class="subscribe-button" id="buy-mensual" value="Restaurar compras"  onclick="restorePurchases()"/></div>
         </div>
     </div>
 </div>

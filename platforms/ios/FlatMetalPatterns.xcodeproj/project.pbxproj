@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		0207DA581B56EA530066E2B4 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0207DA571B56EA530066E2B4 /* Images.xcassets */; };
 		02DC1208DF39466B929F1713 /* PaymentsPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F994C08F3294D1DB1455E15 /* PaymentsPlugin.m */; };
@@ -367,7 +366,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1.0.1;
+				CURRENT_PROJECT_VERSION = 1.0.23;
 				DEVELOPMENT_TEAM = 2V2U428Y6D;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -378,7 +377,7 @@
 				INFOPLIST_FILE = "FlatMetalPatterns/FlatMetalPatterns-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
-				MARKETING_VERSION = 1.0.1;
+				MARKETING_VERSION = 1.0.23;
 				PRODUCT_BUNDLE_IDENTIFIER = com.flatmetalpatterns.flatmetalpatterns;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -395,10 +394,10 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Ignacio Renteria (2V2U428Y6D)";
+				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 1.0.1;
+				CURRENT_PROJECT_VERSION = 1.0.23;
 				DEVELOPMENT_TEAM = 2V2U428Y6D;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FlatMetalPatterns/FlatMetalPatterns-Prefix.pch";
@@ -407,10 +406,10 @@
 				INFOPLIST_FILE = "FlatMetalPatterns/FlatMetalPatterns-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
-				MARKETING_VERSION = 1.0.1;
+				MARKETING_VERSION = 1.0.23;
 				PRODUCT_BUNDLE_IDENTIFIER = com.flatmetalpatterns.flatmetalpatterns;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = "Flat Metal Patterns - Prod";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
